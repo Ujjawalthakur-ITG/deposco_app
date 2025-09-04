@@ -13,7 +13,7 @@ const webhookCreate = async (req, res) => {
           businessUnit: "FIREQUOCF_OCF",
           number: `PO_${shopifyOrder.order_number}`,
           otherReferenceNumber: shopifyOrder.id.toString(), // Shopify order ID
-          type: "Purchase Order",
+          type: "Sales Order",
           status: "New",
           tradingPartner: "SHOPIFY_SUPPLIER", // Default, update if specific supplier
           shipFromAddress: {
