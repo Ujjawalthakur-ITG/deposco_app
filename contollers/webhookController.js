@@ -15,7 +15,7 @@ const webhookCreate = async (req, res) => {
                     number: `PO_${shopifyOrder.order_number}000000`,
                     otherReferenceNumber: shopifyOrder.id.toString(),
                     customerOrderNumber: shopifyOrder.name,
-                    type: "Sales Order",
+                    type: shopifyOrder.payment_terms?.payment_terms_type === "net" ? "Partially Paid": "Purchase Order",
                     status: "New",
                     tradingPartner: "SHOPIFY_SUPPLIER",
                     orderSource: "shopify",
