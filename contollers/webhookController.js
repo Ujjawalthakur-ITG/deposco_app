@@ -116,6 +116,7 @@ const webhookCreate = async (req, res) => {
 
             console.log("Deposco API Response (Create):", deposcoResponse.data);
         } catch (createError) {
+            console.log(createError,"createError")
             if (createError.response && createError.response.status == "HTTP/1.1 409 Conflict") {
                 // Duplicate error, attempt update instead
                 try {
