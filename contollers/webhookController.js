@@ -20,7 +20,7 @@ const webhookCreate = async (req, res) => {
                     tradingPartner: "SHOPIFY_SUPPLIER",
                     orderSource: "shopify",
                     shipVia: shopifyOrder.shipping_lines[0]?.title || "",
-
+                    shipTo: "FAC001",
                     billToAddress: {
                         name:
                             shopifyOrder.billing_address?.name ||
@@ -79,7 +79,7 @@ const webhookCreate = async (req, res) => {
 
                     orderLines: shopifyOrder.line_items.map((item, index) => ({
                         lineNumber: `${shopifyOrder.order_number}--${index + 1}`,
-                        customerLineNumber: "#01001",
+                        customerLineNumber:(index + 1).toString(),
                         lineStatus: "New",
                         itemNumber: item.sku || `ITEM_${index + 1}`,
                         pack: {
@@ -97,9 +97,7 @@ const webhookCreate = async (req, res) => {
             ],
         };
 
-        // Send to Deposco API (create)
         let deposcoResponse;
-
         try {
             deposcoResponse = await axios.post(
                 "https://api.deposco.com/integration/RLL/orders",
@@ -154,4 +152,8 @@ const webhookCreate = async (req, res) => {
     res.status(200).send("Webhook received");
 };
 
-module.exports = { webhookCreate };
+const WebhookShop = async (req, res) => {
+    console.log('Received Shop Update:', req.body);
+    res.status(200).send('Webhook received');
+}
+module.exports = { webhookCreate , WebhookShop};
