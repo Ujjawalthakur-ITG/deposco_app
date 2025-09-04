@@ -115,10 +115,12 @@ const webhookCreate = async (req, res) => {
             );
 
             console.log("Deposco API Response (Create):", deposcoResponse.data);
-        } catch (createError) {
-            console.log(createError,"createError")
-            if (createError.response && createError.response.status == "HTTP/1.1 409 Conflict") {
-                // Duplicate error, attempt update instead
+
+            // Check if Deposco response itself says duplicate
+            if (
+                deposcoResponse.data?.response?.status === "HTTP/1.1 409 Conflict"
+            ) {
+                console.log("Duplicate order found, trying update...");
                 try {
                     deposcoResponse = await axios.post(
                         "https://api.deposco.com/integration/RLL/orders/updates",
@@ -139,14 +141,12 @@ const webhookCreate = async (req, res) => {
                         updateError.response ? updateError.response.data : updateError.message
                     );
                 }
-
-            } else {
-                console.error(
-                    "Error sending to Deposco:",
-                    createError.response?.data || createError.message
-                );
             }
+
+        } catch (createError) {
+            console.log("Error in Create:", createError.response?.data || createError.message);
         }
+
     } catch (error) {
         console.error("Unexpected error in webhook:", error.message);
     }
