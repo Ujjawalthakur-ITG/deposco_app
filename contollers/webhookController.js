@@ -12,7 +12,7 @@ const webhookCreate = async (req, res) => {
             order: [
                 {
                     businessUnit: "FIREQUOCF_OCF",
-                    number: `PO_${shopifyOrder.order_number}000000`,
+                    number: `PO_${shopifyOrder.order_number}`,
                     otherReferenceNumber: shopifyOrder.id.toString(),
                     customerOrderNumber: shopifyOrder.name,
                     type: shopifyOrder.payment_terms?.payment_terms_type === "net" ? "Partially Paid": "Purchase Order",
