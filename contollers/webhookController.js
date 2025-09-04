@@ -11,7 +11,6 @@ const webhookCreate = async (req, res) => {
 
     // Map Shopify data to Deposco Purchase Order API format
     const deposcoPayload = {
-      orders: {
         order: [
           {
             businessUnit: "FIREQUOCF_OCF",
@@ -56,7 +55,6 @@ const webhookCreate = async (req, res) => {
             }))
           }
         ]
-      }
     };
 
     // Send to Deposco API
