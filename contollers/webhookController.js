@@ -97,10 +97,11 @@ const webhookCreate = async (req, res) => {
                 },
             ],
         };
+
         let deposcoResponse;
         try {
             deposcoResponse = await axios.post(
-                "https://api.deposco.com/integration/RLL/orders/updates",
+                "https://api.deposco.com/integration/RLL/orders",
                 deposcoPayload,
                 {
                     headers: {
@@ -111,13 +112,15 @@ const webhookCreate = async (req, res) => {
                     },
                 }
             );
-            console.log("Deposco API Response (Create):", deposcoResponse.data);
+            console.log("Deposco API Response :", deposcoResponse.data);
         } catch (createError) {
             console.log("Error in Create:", createError.response?.data || createError.message);
         }
+
     } catch (error) {
         console.error("Unexpected error in webhook:", error.message);
     }
+
     res.status(200).send("Webhook received");
 };
 
