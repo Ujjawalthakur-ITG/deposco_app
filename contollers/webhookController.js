@@ -97,11 +97,10 @@ const webhookCreate = async (req, res) => {
                 },
             ],
         };
-
         let deposcoResponse;
         try {
             deposcoResponse = await axios.post(
-                "https://api.deposco.com/integration/RLL/orders",
+                "https://api.deposco.com/integration/RLL/orders/updates",
                 deposcoPayload,
                 {
                     headers: {
@@ -112,44 +111,13 @@ const webhookCreate = async (req, res) => {
                     },
                 }
             );
-
             console.log("Deposco API Response (Create):", deposcoResponse.data);
-
-            // Check if Deposco response itself says duplicate
-            if (
-                deposcoResponse.data?.response?.status === "HTTP/1.1 409 Conflict"
-            ) {
-                console.log("Duplicate order found, trying update...");
-                try {
-                    deposcoResponse = await axios.post(
-                        "https://api.deposco.com/integration/RLL/orders/updates",
-                        deposcoPayload,
-                        {
-                            headers: {
-                                Authorization: "Basic cmNhbWJpYXM6RmVxZDIwMjUh",
-                                "X-Tenant-Code": "RLL",
-                                "Content-Type": "application/json",
-                                Accept: "application/json",
-                            },
-                        }
-                    );
-                    console.log("Deposco API Response (Update):", deposcoResponse.data);
-                } catch (updateError) {
-                    console.error(
-                        "Error updating in Deposco:",
-                        updateError.response ? updateError.response.data : updateError.message
-                    );
-                }
-            }
-
         } catch (createError) {
             console.log("Error in Create:", createError.response?.data || createError.message);
         }
-
     } catch (error) {
         console.error("Unexpected error in webhook:", error.message);
     }
-
     res.status(200).send("Webhook received");
 };
 
