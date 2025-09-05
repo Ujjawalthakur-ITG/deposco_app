@@ -12,7 +12,7 @@ const webhookCreate = async (req, res) => {
             order: [
                 {
                     businessUnit: "FIREQUOCF_OCF",
-                    shipfromfacility:"OCF",
+                    shipFromFacility:"OCF",
                     number: `PO_${shopifyOrder.order_number}`,
                     otherReferenceNumber: shopifyOrder.id.toString(),
                     customerOrderNumber: shopifyOrder.name,
