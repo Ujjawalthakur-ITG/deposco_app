@@ -101,7 +101,7 @@ const webhookCreate = async (req, res) => {
         let deposcoResponse;
         try {
             deposcoResponse = await axios.post(
-                "https://api.deposco.com/integration/RLL/orders",
+                "https://api.deposco.com/integration/RLL/orders/updates",
                 deposcoPayload,
                 {
                     headers: {
