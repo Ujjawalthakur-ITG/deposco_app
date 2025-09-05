@@ -12,12 +12,12 @@ const webhookCreate = async (req, res) => {
             order: [
                 {
                     businessUnit: "FIREQUOCF_OCF",
-                    shipFromFacility:"OCF",
+                    shipFromFacility: "OCF",
                     number: `PO_${shopifyOrder.order_number}`,
                     otherReferenceNumber: shopifyOrder.id.toString(),
                     customerOrderNumber: shopifyOrder.name,
-                    type: shopifyOrder.payment_terms?.payment_terms_type === "net" ? "Partially Paid": "Purchase Order",
-                    status: "New",
+                    type: "",
+                    status: shopifyOrder.payment_terms?.payment_terms_type === "net" ? "Partially Paid" : "Purchase Order",
                     tradingPartner: "SHOPIFY_SUPPLIER",
                     orderSource: "shopify",
                     shipVia: shopifyOrder.shipping_lines[0]?.title || "",
@@ -26,13 +26,13 @@ const webhookCreate = async (req, res) => {
                         name:
                             shopifyOrder.billing_address?.name ||
                             `${shopifyOrder.billing_address?.first_name || ""} ${shopifyOrder.billing_address?.last_name || ""}`,
+                        city: shopifyOrder.billing_address?.city || "Unknown City",
+                        stateProvinceCode: shopifyOrder.billing_address?.province_code || "XX",
+                        postalCode: shopifyOrder.billing_address?.zip || "00000",
+                        countryCode: shopifyOrder.billing_address?.country_code || "US",
                         address: {
                             line1: shopifyOrder.billing_address?.address1 || "Unknown Street",
                             line2: shopifyOrder.billing_address?.address2 || "",
-                            city: shopifyOrder.billing_address?.city || "Unknown City",
-                            stateProvinceCode: shopifyOrder.billing_address?.province_code || "XX",
-                            postalCode: shopifyOrder.billing_address?.zip || "00000",
-                            countryCode: shopifyOrder.billing_address?.country_code || "US",
                         },
                         phone1: shopifyOrder.billing_address?.phone || shopifyOrder.phone || "",
                     },
@@ -43,13 +43,13 @@ const webhookCreate = async (req, res) => {
                         name:
                             shopifyOrder.shipping_address?.name ||
                             `${shopifyOrder.shipping_address?.first_name || ""} ${shopifyOrder.shipping_address?.last_name || ""}`,
+                        city: shopifyOrder.shipping_address?.city || "Unknown City",
+                        stateProvinceCode: shopifyOrder.shipping_address?.province_code || "XX",
+                        postalCode: shopifyOrder.shipping_address?.zip || "00000",
+                        countryCode: shopifyOrder.shipping_address?.country_code || "US",
                         address: {
                             line1: shopifyOrder.shipping_address?.address1 || "Unknown Street",
                             line2: shopifyOrder.shipping_address?.address2 || "",
-                            city: shopifyOrder.shipping_address?.city || "Unknown City",
-                            stateProvinceCode: shopifyOrder.shipping_address?.province_code || "XX",
-                            postalCode: shopifyOrder.shipping_address?.zip || "00000",
-                            countryCode: shopifyOrder.shipping_address?.country_code || "US",
                         },
                         phone1: shopifyOrder.shipping_address?.phone || shopifyOrder.phone || "",
                     },
@@ -80,7 +80,7 @@ const webhookCreate = async (req, res) => {
 
                     orderLines: shopifyOrder.line_items.map((item, index) => ({
                         lineNumber: `${shopifyOrder.order_number}--${index + 1}`,
-                        customerLineNumber:(index + 1).toString(),
+                        customerLineNumber: (index + 1).toString(),
                         lineStatus: "New",
                         itemNumber: item.sku || `ITEM_${index + 1}`,
                         pack: {
@@ -153,4 +153,4 @@ const webhookCreate = async (req, res) => {
     res.status(200).send("Webhook received");
 };
 
-module.exports = { webhookCreate};
+module.exports = { webhookCreate };
