@@ -152,8 +152,4 @@ const webhookCreate = async (req, res) => {
     res.status(200).send("Webhook received");
 };
 
-const WebhookShop = async (req, res) => {
-    console.log('Received Shop Update:', req.body);
-    res.status(200).send('Webhook received');
-}
-module.exports = { webhookCreate , WebhookShop};
+module.exports = { webhookCreate};
