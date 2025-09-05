@@ -80,7 +80,7 @@ const webhookCreate = async (req, res) => {
 
                     orderLines: shopifyOrder.line_items.map((item, index) => ({
                         lineNumber: `${shopifyOrder.order_number}--${index + 1}`,
-                        customerLineNumber: (index + 1).toString(),
+                        customerLineNumber: (index + 1).toString().replace("#", ""),
                         lineStatus: "New",
                         itemNumber: item.sku || `ITEM_${index + 1}`,
                         pack: {
